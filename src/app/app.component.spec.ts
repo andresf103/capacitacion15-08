@@ -32,6 +32,7 @@ describe(`(1) TEST del componente "AppComponent"`, () => {
     }).compileComponents();
     authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
     dataService = TestBed.inject(DataService) as jasmine.SpyObj<DataService>;
+
     dataService.generarDosNumerosAleatorios.and.returnValue([1,2]);
   });
 
@@ -101,5 +102,33 @@ describe(`(1) TEST del componente "AppComponent"`, () => {
     expect(mock).toEqual(testData);
   }));
 
+  it('Debería setear isCheck a ERROR_CHECK cuando la operación falla',() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    fixture.detectChanges();
+
+    dataService.comprobarOperacion.and.returnValue(false);
+    app.form.setValue({email: 'email@email.com', password: '123456', result: 1});
+
+    app.sendLogin();
+
+    expect(app.isCheck).toEqual('ERROR_CHECK');
+    expect(authService.login).not.toHaveBeenCalled();
+  });
+
+  it('Debería setear isCheck a ERROR_USER cuando nos retorna error', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    fixture.detectChanges();
+
+    dataService.comprobarOperacion.and.returnValue(true);
+    authService.login.and.returnValue(throwError('error de login'));
+    app.form.setValue({email: 'email@email.com', password: '123456', result: 1});
+
+    app.sendLogin();
+
+    expect(app.isCheck).toEqual('ERROR_USER');
+    expect(authService.login).toHaveBeenCalled();
+  });
 
 });

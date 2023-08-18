@@ -17,7 +17,7 @@
         <button [disabled]="form.invalid" class="btn">Enviar</button>
       </div>
       <div class="form-group">
-        <label>{{checkHuman[0]}} + {{checkHuman[1]}} = </label>
+        <label>{{checkHuman.numero1}}  {{obtenerSimboloOperacion(checkHuman.operacion)}}  {{checkHuman.numero2}} = </label>
         <input formControlName="result" type="text">
       </div>
 

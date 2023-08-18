@@ -3,8 +3,9 @@ import { of, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 
 describe('(3) Prueba a "AuthService"', () => {
+
   let service: AuthService;
-  let httpClientSpy: { post: jasmine.Spy }; // aquí
+  let httpClientSpy: { post: jasmine.Spy }; // aquí estamos declarando la variable
 
   beforeEach(() => { // Antes de cada it (prueba)
     httpClientSpy = jasmine.createSpyObj('HttpClient', ['post']);
@@ -29,12 +30,12 @@ describe('(3) Prueba a "AuthService"', () => {
         "user": "usuario"
       }
     }
-    httpClientSpy.post.and.returnValue(of(mockResultLogin)) // convertimos el mock en Observable con of()
-    const { email, password } = mockUserCredentials
+    httpClientSpy.post.and.returnValue(of(mockResultLogin)); // convertimos el mock en Observable con of()
+    const { email, password } = mockUserCredentials;
     service.login(email, password)
       .subscribe(resultado => { //Como No se sabe el tiempo de respuesta tenemos que poner el done() al final
-        expect(resultado).toEqual(mockResultLogin)
-        done()
+        expect(resultado).toEqual(mockResultLogin);
+        done();
       })
   });
 
